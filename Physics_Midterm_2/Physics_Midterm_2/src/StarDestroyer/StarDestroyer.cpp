@@ -1,24 +1,17 @@
 #include "StarDestroyer.h"
+#include <Physics/PhysicsShapeAndCollision.h>
+#include "../PhysicsApplication.h"
 
 StarDestroyer::StarDestroyer()
 {
 	starDestroyer = new Model();
-	leftSphere = new Model();
-	rightSphere = new Model();
 
 	starDestroyerPhyObj = new PhysicsObject();
-	leftSpherePhy = new PhysicsObject();
-	rightSpherePhy = new PhysicsObject();
 
 	InitializeEntity(this);
 
 	starDestroyer->modelId = "StarDestroyer";
-	leftSphere->modelId = "LeftSphere";
-	rightSphere->modelId = "RightSphere";
 
-
-	colliderTags[leftSpherePhy] = "LeftSphere";
-	colliderTags[rightSpherePhy] = "RightSphere";
 	colliderTags[starDestroyerPhyObj] = "Ship";
 
 }
@@ -35,6 +28,32 @@ std::string StarDestroyer::GetTag(PhysicsObject* phyObj)
 	return "";
 }
 
+int StarDestroyer::GetSphereDeflector(const glm::vec3& point)
+{
+	if (IsPointInisideSphere(point, rightSphereShape))
+	{
+		Debugger::Print("RightSphere");
+		ReducHealth(0);
+		return 0;
+	}
+
+	if (IsPointInisideSphere(point, leftSphereShape))
+	{
+		Debugger::Print("LeftSphere");
+		ReducHealth(1);
+		return 1;
+	}
+
+	return -1;
+}
+
+void StarDestroyer::SetApplication(PhysicsApplication* application)
+{
+	this->application = application;
+	application->titleMessage = 
+		"Left Sphere : " + std::to_string(leftHealth) + "  Right Sphere : " + std::to_string(rightHealth);
+}
+
 void StarDestroyer::Start()
 {
 }
@@ -42,6 +61,10 @@ void StarDestroyer::Start()
 void StarDestroyer::Update(float deltaTime)
 {
 	DrawCollisionAabb(starDestroyerPhyObj);
+
+	renderer->DrawSphere(leftSphereShape.position, leftSphereShape.radius);
+	renderer->DrawSphere(rightSphereShape.position, rightSphereShape.radius);
+
 	//DrawAABBRecursive(phyObj->hierarchialAABB->rootNode);
 }
 
@@ -55,39 +78,40 @@ void StarDestroyer::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, 
 	starDestroyer->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.4, 0.4, 0.4, 1.0f));
 	//starDestroyer->isWireframe = true;
 
-	leftSphere->LoadModel("res/Models/DefaultSphere.fbx");
-	leftSphere->isWireframe = true;
-	leftSphere->transform.SetPosition(glm::vec3(10, 24, 55));
-	leftSphere->transform.SetScale(glm::vec3(2.5));
-	leftSphere->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(1.0f, 0, 0, 1.0f));
 
-	rightSphere->LoadModel("res/Models/DefaultSphere.fbx");
-	rightSphere->isWireframe = true;
-	rightSphere->transform.SetPosition(glm::vec3(-10, 24, 55));
-	rightSphere->transform.SetScale(glm::vec3(2.5));
-	rightSphere->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.0f, 1.0f, 0, 1.0f));
+	leftSphereShape.position = glm::vec3(10, 24, 55.5);
+	leftSphereShape.radius = 3.0f;
+
+	rightSphereShape.position = glm::vec3(-10, 24, 55.5);
+	rightSphereShape.radius = 3.0f;
+
 
 	renderer->AddModel(starDestroyer, shader);
-	renderer->AddModel(leftSphere, shader);
-	renderer->AddModel(rightSphere, shader);
 	
 	starDestroyerPhyObj->Initialize(starDestroyer, MESH_OF_TRIANGLES, STATIC, TRIGGER, true);
 	starDestroyerPhyObj->userData = this;
 
-	leftSpherePhy->Initialize(leftSphere, SPHERE, STATIC, TRIGGER, true);
-	leftSpherePhy->userData = this;
-
-	rightSpherePhy->Initialize(rightSphere, SPHERE, STATIC, TRIGGER, true);
-	rightSpherePhy->userData = this;
-
-	physicsEngine->AddPhysicsObject(leftSpherePhy);
-	physicsEngine->AddPhysicsObject(rightSpherePhy);
 	physicsEngine->AddPhysicsObject(starDestroyerPhyObj);
 
 }
 
 void StarDestroyer::RemoveFromRendererAndPhysics(Renderer* renderer, PhysicsEngine* physicsEngine)
 {
+}
+
+void StarDestroyer::ReducHealth(int index)
+{
+	if (index == 0)
+	{
+		rightHealth -= 25;
+	}
+	else if (index == 1)
+	{
+		leftHealth -= 25;
+	}
+
+	application->titleMessage = "Left Sphere : " + std::to_string(leftHealth) + "  Right Sphere : " + std::to_string(rightHealth);
+
 }
 
 void StarDestroyer::DrawAABBRecursive(HierarchicalAABBNode* node)

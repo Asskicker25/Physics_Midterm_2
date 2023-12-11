@@ -63,6 +63,8 @@ void PhysicsApplication::SetUp()
 	xwingManager->SetStarDestroyer(starDestroyer);
 
 
+	starDestroyer->SetApplication(this);
+
 	EntityManager::GetInstance().Start();
 
 }
@@ -79,7 +81,7 @@ void PhysicsApplication::PostRender()
 
 void PhysicsApplication::ProcessInput(GLFWwindow* window)
 {
-	std::stringstream ssTitle;
+	/*std::stringstream ssTitle;
 	ssTitle << "Camera Pos : "
 		<< camera->transform.position.x << " , "
 		<< camera->transform.position.y << " , "
@@ -91,9 +93,10 @@ void PhysicsApplication::ProcessInput(GLFWwindow* window)
 		<< "  Camera Z : "
 		<<camera->transform.rotation.z;
 
-	std::string theTitle = ssTitle.str();
+	std::string theTitle = ssTitle.str();*/
 
-	glfwSetWindowTitle(window, theTitle.c_str());
+
+	glfwSetWindowTitle(window, titleMessage.c_str());
 }
 
 void PhysicsApplication::KeyCallBack(GLFWwindow* window, int& key, int& scancode, int& action, int& mods)

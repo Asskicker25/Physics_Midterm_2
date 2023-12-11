@@ -81,8 +81,6 @@ XWing* XWingManager::SpawnXWing(const glm::vec3& point1, const glm::vec3& point2
 	float length = glm::length(diff);
 	glm::vec3 dir = glm::normalize(diff);
 
-	xwing->SetRayHitPoint(GetRayHitPoint(point1, dir, length));
-
 	listOfXwings.push_back(xwing);
 
 	CameraHandler::GetInstance().FollowObject(xwing->model);
@@ -136,8 +134,8 @@ void XWingManager::RandomSphereRun()
 
 	int random = GetRandomIntNumber(0, 1);
 
-	Transform* sphereTransform = random == 0 ? starDestroyer->rightSphere->GetTransform() :
-		starDestroyer->leftSphere->GetTransform();
+	glm::vec3 spherePos = random == 0 ? starDestroyer->rightSphereShape.position :
+		starDestroyer->leftSphereShape .position;
 
 	float dirX = GetRandomFloatNumber(-1.0f, 1.0f);
 	float dirY = GetRandomFloatNumber(-1.0f, 1.0f);
@@ -145,8 +143,8 @@ void XWingManager::RandomSphereRun()
 
 	glm::vec3 dir = glm::vec3(dirX, dirY, dirZ);
 
-	glm::vec3 point1 = sphereTransform->position + dir * sphereSpawnRange;
-	glm::vec3 point2 = sphereTransform->position - dir * sphereSpawnRange;
+	glm::vec3 point1 = spherePos + dir * sphereSpawnRange;
+	glm::vec3 point2 = spherePos - dir * sphereSpawnRange;
 
 
 	XWing* xwing = SpawnXWing(point1,point2);
@@ -157,8 +155,6 @@ void XWingManager::SetStarDestroyer(StarDestroyer* starDestroyer)
 {
 	this->starDestroyer = starDestroyer;
 
-	leftSphere = dynamic_cast<Sphere*> ( starDestroyer->leftSpherePhy->GetTransformedPhysicsShape());
-	rightSphere = dynamic_cast<Sphere*> (starDestroyer->rightSpherePhy->GetTransformedPhysicsShape());
 }
 
 

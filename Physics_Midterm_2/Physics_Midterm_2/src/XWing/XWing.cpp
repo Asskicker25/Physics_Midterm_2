@@ -30,20 +30,8 @@ void XWing::CreateInstance(Model& model)
 				StarDestroyer* starDestroyer = (StarDestroyer*)entity;
 
 				std::string tag = starDestroyer->GetTag(other);
-
-				if (tag == "LeftSphere")
-				{
-					Debugger::Print("LeftSphere");
-					modelPhy->isCollisionInvoke = false;
-					Shoot();
-				}
-				else if (tag == "RightSphere")
-				{
-					Debugger::Print("RightSphere");
-					modelPhy->isCollisionInvoke = false;
-					Shoot();
-				}
-				else if (tag == "Ship")
+			
+				if (tag == "Ship")
 				{
 					modelPhy->isCollisionInvoke = false;
 					Shoot();

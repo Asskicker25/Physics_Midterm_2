@@ -18,7 +18,6 @@ void Bullet::CreateInstance(Model& model)
 
 	phyObj->AssignCollisionCallback([this](PhysicsObject* other)
 		{
-			if (hasCollided) return;
 
 			Entity* entity = (Entity*)other->userData;
 
@@ -28,28 +27,17 @@ void Bullet::CreateInstance(Model& model)
 
 				std::string tag = starDestroyer->GetTag(other);
 
-
-				if (tag == "LeftSphere")
+				if (tag == "Ship")
 				{
-					Debugger::Print("LeftSphere");
-					hasCollided = true;
-					Destroy();
-
-				}
-				else if (tag == "RightSphere")
-				{
-					Debugger::Print("RightSphere");
-					hasCollided = true;
-					Destroy();
-				}
-				else if (tag == "Ship")
-				{
-					Debugger::Print("Ship");
-
 					std::vector<glm::vec3> collisionPts = phyObj->GetCollisionPoints();
-					CollisionDetail::GetInstance().AddPoint(GetCollisionPoint(collisionPts));
+					glm::vec3 point = GetCollisionPoint(collisionPts);
 
-					hasCollided = true;
+					int result = starDestroyer->GetSphereDeflector(point);
+
+					if (result == -1)
+					{
+						CollisionDetail::GetInstance().AddPoint(point);
+					}
 
 					Destroy();
 				}

@@ -2,21 +2,26 @@
 
 #include "../EntityManager/EntityManager.h"
 
+class PhysicsApplication;
+
 class StarDestroyer : public Entity
 {
 public:
 
 	Model* starDestroyer;
-	Model* leftSphere;
-	Model* rightSphere;
+
+	Sphere leftSphereShape;
+	Sphere rightSphereShape;
 
 	PhysicsObject* starDestroyerPhyObj;
-	PhysicsObject* leftSpherePhy;
-	PhysicsObject* rightSpherePhy;
 
 	StarDestroyer();
 
 	std::string GetTag(PhysicsObject* phyObj);
+
+	int GetSphereDeflector(const glm::vec3& point);
+
+	void SetApplication(PhysicsApplication* application);
 
 	// Inherited via Entity
 	void Start() override;
@@ -27,8 +32,14 @@ public:
 private:
 
 	Renderer* renderer;
+	PhysicsApplication* application;
+
+	int leftHealth = 100;
+	int rightHealth = 100;
 
 	std::unordered_map<PhysicsObject*, std::string> colliderTags;
+
+	void ReducHealth(int index);
 
 	void DrawAABBRecursive(HierarchicalAABBNode* node);
 	void DrawCollisionAabb(PhysicsObject* phyObj);

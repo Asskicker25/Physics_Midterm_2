@@ -9,6 +9,7 @@ class PhysicsApplication : public ApplicationWindow
 public:
 
 	PhysicsEngine physicsEngine;
+	std::string titleMessage;
 
 	// Inherited via ApplicationWindow
 	void SetUp() override;

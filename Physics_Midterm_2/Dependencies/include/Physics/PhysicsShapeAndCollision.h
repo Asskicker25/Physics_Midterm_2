@@ -233,6 +233,14 @@ static bool IsPointInsideAABB(const glm::vec3& point, const Aabb& aabb)
 		);
 }
 
+static bool IsPointInisideSphere(const glm::vec3& point, const Sphere& sphere)
+{
+	glm::vec3 diff = sphere.position - point;
+	float sqDist = glm::dot(diff, diff);
+
+	return sqDist <= sphere.radius * sphere.radius;
+}
+
 static bool IsTriangleInsideAABB(const Triangle& triangle, const Aabb& aabb)
 {
 	if (IsPointInsideAABB(triangle.v1, aabb)) return true;
