@@ -1,9 +1,15 @@
 #pragma once
 
 #include <Graphics/ApplicationWindow.h>
+#include <Physics/PhysicsEngine.h>
 
 class PhysicsApplication : public ApplicationWindow
 {
+
+public:
+
+	PhysicsEngine physicsEngine;
+
 	// Inherited via ApplicationWindow
 	void SetUp() override;
 	void PreRender() override;

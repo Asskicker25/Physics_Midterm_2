@@ -144,6 +144,10 @@
     <ClCompile Include="src\ApplicationMain.cpp" />
     <ClCompile Include="src\Utilities\BezierCurve\CubicBezierCurve.cpp" />
     <ClCompile Include="src\Utilities\RendererInstance.cpp" />
+    <ClCompile Include="src\StarDestroyer\StarDestroyer.cpp" />
+    <ClCompile Include="src\XWing\XWing.cpp" />
+    <ClCompile Include="src\XWing\XWingFactory.cpp" />
+    <ClCompile Include="src\XWing\XWingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\EntityManager\Entity.h" />
@@ -157,6 +161,10 @@
     <ClInclude Include="src\Utilities\Random.h" />
     <ClInclude Include="src\Utilities\Remap.h" />
     <ClInclude Include="src\Utilities\RendererInstance.h" />
+    <ClInclude Include="src\StarDestroyer\StarDestroyer.h" />
+    <ClInclude Include="src\XWing\XWing.h" />
+    <ClInclude Include="src\XWing\XWingFactory.h" />
+    <ClInclude Include="src\XWing\XWingManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
