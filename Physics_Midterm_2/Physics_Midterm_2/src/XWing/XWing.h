@@ -9,7 +9,9 @@ public:
 
 	Model* model;
 	Model* colliderModel;
-	PhysicsObject* phyObj;
+
+	PhysicsObject* modelPhy;
+	PhysicsObject* colliderModelPhy;
 
 	XWing();
 	void CreateInstance(Model& model, Model& colliderModel);
@@ -19,7 +21,9 @@ private:
 
 	bool drawPath = false;
 
-	float spacing = 10;
+	float spacing = 2;
+
+	float speed = 10;
 
 	glm::vec3 startPos = glm::vec3(0);
 	glm::vec3 endPos = glm::vec3(0);

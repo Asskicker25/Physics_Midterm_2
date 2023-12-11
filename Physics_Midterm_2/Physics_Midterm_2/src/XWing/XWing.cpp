@@ -4,7 +4,9 @@ XWing::XWing()
 {
 	model = new Model();
 	colliderModel = new Model();
-	phyObj = new PhysicsObject();
+
+	modelPhy = new PhysicsObject();
+	colliderModelPhy = new PhysicsObject();
 }
 
 void XWing::CreateInstance(Model& model, Model& colliderModel)
@@ -14,8 +16,11 @@ void XWing::CreateInstance(Model& model, Model& colliderModel)
 
 	this->colliderModel->isWireframe = true;
 
-	phyObj->Initialize(this->colliderModel, SPHERE, DYNAMIC, TRIGGER, true);
-	phyObj->userData = this;
+	modelPhy->Initialize(this->model, SPHERE, DYNAMIC, TRIGGER);
+	modelPhy->userData = this;
+
+	colliderModelPhy->Initialize(this->colliderModel, SPHERE, DYNAMIC, TRIGGER, true);
+	colliderModelPhy->userData = this;
 }
 
 void XWing::AttackRun(const glm::vec3& startPos, const glm::vec3& endPos)
@@ -39,6 +44,14 @@ void XWing::AttackRun(const glm::vec3& startPos, const glm::vec3& endPos)
 		listOfPathPoints.push_back(pos);
 	}
 
+	model->transform.SetPosition(startPos);
+
+	glm::vec3 right = glm::cross(glm::vec3(0, 1, 0), direction);
+	glm::vec3 up = glm::cross(direction, right);
+
+	model->transform.SetOrientationFromDirections(up, right);
+
+	modelPhy->velocity = direction * speed;
 
 	drawPath = true;
 }
@@ -49,7 +62,7 @@ void XWing::DrawPath()
 
 	for (glm::vec3 pos : listOfPathPoints)
 	{
-		renderer->DrawSphere(pos, 2, colors[1]);
+		renderer->DrawSphere(pos, 0.5, colors[1]);
 	}
 
 	renderer->DrawSphere(startPos, 10, colors[0]);

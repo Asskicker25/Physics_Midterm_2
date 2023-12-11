@@ -4,10 +4,10 @@
 XWingFactory::XWingFactory()
 {
     xWingModel = new Model("Assets/Models/X-Wing_Attack_xyz_n_uv.ply");
-    xWingModel->transform.SetScale(glm::vec3(0.1f));
+    xWingModel->transform.SetScale(glm::vec3(1.0f));
 
     xWingColliderModel = new Model("res/Models/DefaultSphere.fbx");
-    xWingColliderModel->isWireframe = true;
+    xWingColliderModel->isWireframe = false;
     xWingColliderModel->transform.SetScale(glm::vec3(10));
 
 }
@@ -24,7 +24,8 @@ XWing* XWingFactory::CreateXWing()
 
     xwing->colliderModel->SetModelParent(xwing->model);
 
-    physicsEngine->AddPhysicsObject(xwing->phyObj);
+    physicsEngine->AddPhysicsObject(xwing->colliderModelPhy);
+    physicsEngine->AddPhysicsObject(xwing->modelPhy);
 
     EntityManager::GetInstance().AddEntity("Xwing" + std::to_string(spawnedCount), xwing);
 
