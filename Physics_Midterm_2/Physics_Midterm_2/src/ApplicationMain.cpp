@@ -3,6 +3,7 @@
 
 int main(int argv, char* argc[])
 {
+	Debugger::print = true;
 
 	PhysicsApplication application;
 

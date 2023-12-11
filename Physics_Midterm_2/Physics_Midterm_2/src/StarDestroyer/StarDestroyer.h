@@ -5,12 +5,17 @@
 class StarDestroyer : public Entity
 {
 public:
-	Model* model;
-	PhysicsObject* phyObj;
+
+	Model* starDestroyer;
+	Model* leftSphere;
+	Model* rightSphere;
+
+	PhysicsObject* starDestroyerPhyObj;
+	PhysicsObject* leftSpherePhy;
+	PhysicsObject* rightSpherePhy;
 
 	StarDestroyer();
 
-	void DrawAABBRecursive(HierarchicalAABBNode* node);
 
 	// Inherited via Entity
 	void Start() override;
@@ -22,5 +27,7 @@ private:
 
 	Renderer* renderer;
 
+	void DrawAABBRecursive(HierarchicalAABBNode* node);
+	void DrawCollisionAabb(PhysicsObject* phyObj);
 };
 

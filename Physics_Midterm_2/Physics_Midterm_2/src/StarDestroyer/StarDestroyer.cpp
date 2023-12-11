@@ -2,8 +2,13 @@
 
 StarDestroyer::StarDestroyer()
 {
-	model = new Model();
-	phyObj = new PhysicsObject();
+	starDestroyer = new Model();
+	leftSphere = new Model();
+	rightSphere = new Model();
+
+	starDestroyerPhyObj = new PhysicsObject();
+	leftSpherePhy = new PhysicsObject();
+	rightSpherePhy = new PhysicsObject();
 
 	InitializeEntity(this);
 
@@ -15,21 +20,42 @@ void StarDestroyer::Start()
 
 void StarDestroyer::Update(float deltaTime)
 {
-	DrawAABBRecursive(phyObj->hierarchialAABB->rootNode);
+	DrawCollisionAabb(starDestroyerPhyObj);
+	//DrawAABBRecursive(phyObj->hierarchialAABB->rootNode);
 }
 
 void StarDestroyer::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, PhysicsEngine* physicsEngine)
 {
 	this->renderer = renderer;
 
-	model->LoadModel("Assets/Models/Stardestroyer_CompleteModel_LayersJoined (decimate 10 per, 167,274 vert, 59,360 face).ply");
-	model->transform.SetScale(glm::vec3(0.1f));
-	model->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.7, 0.7, 0.7, 1.0f));
+	starDestroyer->LoadModel("Assets/Models/Stardestroyer_CompleteModel_LayersJoined (decimate 10 per, 167,274 vert, 59,360 face).ply");
+	starDestroyer->transform.SetScale(glm::vec3(0.1f));
+	starDestroyer->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.7, 0.7, 0.7, 1.0f));
 
-	renderer->AddModel(model, shader);
+	leftSphere->LoadModel("res/Models/DefaultSphere.fbx");
+	leftSphere->isWireframe = true;
+	leftSphere->transform.SetPosition(glm::vec3(10, 24, 55));
+	leftSphere->transform.SetScale(glm::vec3(2.5));
+	leftSphere->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(1.0f, 0, 0, 1.0f));
+
+	rightSphere->LoadModel("res/Models/DefaultSphere.fbx");
+	rightSphere->isWireframe = true;
+	rightSphere->transform.SetPosition(glm::vec3(-10, 24, 55));
+	rightSphere->transform.SetScale(glm::vec3(2.5));
+	rightSphere->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.0f, 1.0f, 0, 1.0f));
+
+	renderer->AddModel(starDestroyer, shader);
+	renderer->AddModel(leftSphere, shader);
+	renderer->AddModel(rightSphere, shader);
 	
-	phyObj->Initialize(model, MESH_OF_TRIANGLES, STATIC, TRIGGER, true);
-	phyObj->userData = this;
+	starDestroyerPhyObj->Initialize(starDestroyer, MESH_OF_TRIANGLES, STATIC, TRIGGER, true);
+	starDestroyerPhyObj->userData = this;
+
+	leftSpherePhy->Initialize(leftSphere, SPHERE, STATIC, TRIGGER, true);
+	leftSpherePhy->userData = this;
+
+	rightSpherePhy->Initialize(rightSphere, SPHERE, STATIC, TRIGGER, true);
+	rightSpherePhy->userData = this;
 
 }
 
@@ -57,4 +83,14 @@ void StarDestroyer::DrawAABBRecursive(HierarchicalAABBNode* node)
 	DrawAABBRecursive(node->leftNode);
 	DrawAABBRecursive(node->rightNode);
 
+}
+
+void StarDestroyer::DrawCollisionAabb(PhysicsObject* phyObj)
+{
+	std::vector<Aabb> collisionAabs = phyObj->GetCollisionAabbs();
+
+	for (Aabb aabb : collisionAabs)
+	{
+		renderer->DrawAABB(GetGraphicsAabb(aabb), glm::vec4(0, 1, 0, 1));
+	}
 }

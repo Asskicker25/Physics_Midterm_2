@@ -28,6 +28,8 @@ XWing* XWingFactory::CreateXWing()
 
     EntityManager::GetInstance().AddEntity("Xwing" + std::to_string(spawnedCount), xwing);
 
+    //spawnedCount++;
+
     return xwing;
 }
 
