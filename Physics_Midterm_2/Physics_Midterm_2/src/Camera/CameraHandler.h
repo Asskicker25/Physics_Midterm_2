@@ -25,7 +25,7 @@ private:
 
 	bool followAndLookAt = false;
 
-	float followDistance = 100;
+	float followDistance = 10;
 	float speed = 0;
 	float maxSpeed = 10;
 	float accelerationRange = 0;

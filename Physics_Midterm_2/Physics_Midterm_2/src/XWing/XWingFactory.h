@@ -20,6 +20,5 @@ private:
 	PhysicsEngine* physicsEngine = nullptr;
 
 	Model* xWingModel = nullptr;
-	Model* xWingColliderModel = nullptr;
 };
 

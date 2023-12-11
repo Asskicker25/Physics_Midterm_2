@@ -8,24 +8,24 @@ class XWing : public Entity
 public:
 
 	Model* model;
-	Model* colliderModel;
 
 	PhysicsObject* modelPhy;
-	PhysicsObject* colliderModelPhy;
 
 	XWing();
-	void CreateInstance(Model& model, Model& colliderModel);
+	void CreateInstance(Model& model);
 	void AttackRun(const glm::vec3& startPos, const glm::vec3& endPos);
 
 	void SetRayHitPoint(const glm::vec3& point);
 	void HandleShooting();
+	void Shoot();
 
 private:
 
 	bool drawPath = false;
+	bool didShoot = false;
 
 	float spacing = 2;
-	float turnAwayDistance = 10;
+	float turnAwayDistance = 40;
 
 	float speed = 30;
 	float sqDist = 0;

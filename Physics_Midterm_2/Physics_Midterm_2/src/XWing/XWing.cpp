@@ -4,28 +4,19 @@
 XWing::XWing()
 {
 	model = new Model();
-	colliderModel = new Model();
 
 	modelPhy = new PhysicsObject();
-	colliderModelPhy = new PhysicsObject();
 
 	sqCheckDist = turnAwayDistance * turnAwayDistance;
 }
 
-void XWing::CreateInstance(Model& model, Model& colliderModel)
+void XWing::CreateInstance(Model& model)
 {
 	this->model->CopyFromModel(model);
-	this->colliderModel->CopyFromModel(colliderModel);
 
-	this->colliderModel->isWireframe = true;
 
 	modelPhy->Initialize(this->model, SPHERE, DYNAMIC, TRIGGER,true);
 	modelPhy->userData = this;
-
-	colliderModelPhy->Initialize(this->colliderModel, SPHERE, DYNAMIC, TRIGGER, true);
-	colliderModelPhy->userData = this;
-
-	modelPhy->AddExludingPhyObj(modelPhy); 
 
 	/*colliderModelPhy->AssignCollisionCallback([this](PhysicsObject* other)
 		{
@@ -96,6 +87,7 @@ void XWing::SetRayHitPoint(const glm::vec3& point)
 
 void XWing::HandleShooting()
 {
+	if (didShoot) return;
 	if (rayHitPoint == glm::vec3(0)) return;
 
 	diff = rayHitPoint - model->transform.position;
@@ -104,7 +96,14 @@ void XWing::HandleShooting()
 
 	if (sqDist <= sqCheckDist)
 	{
+		didShoot = true;
+		Shoot();
 	}
+}
+
+void XWing::Shoot()
+{
+	modelPhy->velocity = -modelPhy->velocity;
 }
 
 void XWing::DrawPath()
@@ -113,11 +112,11 @@ void XWing::DrawPath()
 
 	for (glm::vec3 pos : listOfPathPoints)
 	{
-		renderer->DrawSphere(pos, 0.1, colors[1]);
+		renderer->DrawSphere(pos, 0.05, colors[1]);
 	}
 
-	renderer->DrawSphere(startPos, 5, colors[0]);
-	renderer->DrawSphere(endPos, 5, colors[2]);
+	renderer->DrawSphere(startPos, 2, colors[0]);
+	renderer->DrawSphere(endPos, 2, colors[2]);
 	//renderer->DrawSphere(rayHitPoint, 5, colors[3]);
 
 }

@@ -8,7 +8,7 @@ CameraHandler::CameraHandler()
 {
 	InitializeEntity(this);
 
-	followOffset = glm::vec3(0, 20, 0);
+	followOffset = glm::vec3(0, 1, 0);
 }
 
 CameraHandler& CameraHandler::GetInstance()
