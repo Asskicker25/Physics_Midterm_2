@@ -23,7 +23,7 @@ private:
 
 	float spacing = 2;
 
-	float speed = 10;
+	float speed = 30;
 
 	glm::vec3 startPos = glm::vec3(0);
 	glm::vec3 endPos = glm::vec3(0);

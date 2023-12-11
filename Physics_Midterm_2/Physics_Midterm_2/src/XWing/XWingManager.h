@@ -13,7 +13,7 @@ public:
 
 	XWingManager();
 
-	XWing* SpawnXWing();
+	XWing* SpawnXWing(const glm::vec3& point1, const glm::vec3& point2);
 
 	void RandomAttackRun();
 	void RandomShipAttackRun();

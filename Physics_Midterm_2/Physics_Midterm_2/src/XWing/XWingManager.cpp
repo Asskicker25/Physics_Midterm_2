@@ -1,5 +1,6 @@
 #include "XWingManager.h"
 #include "../Utilities/Random.h"
+#include "../Camera/CameraHandler.h"
 
 XWingManager::XWingManager()
 {
@@ -47,10 +48,14 @@ void XWingManager::Start()
 
 }
 
-XWing* XWingManager::SpawnXWing()
+XWing* XWingManager::SpawnXWing(const glm::vec3& point1, const glm::vec3& point2)
 {
 	XWing* xwing = xwingFactory->CreateXWing();
+	xwing->AttackRun(point1, point2);
 
+	listOfXwings.push_back(xwing);
+
+	CameraHandler::GetInstance().FollowObject(xwing->model);
 
 	return xwing;
 }
@@ -60,10 +65,7 @@ void XWingManager::RandomAttackRun()
 	glm::vec3 point1 = GetPointInSpace();
 	glm::vec3 point2 = GetPointInSpace();
 
-	XWing* xwing = SpawnXWing();
-	xwing->AttackRun(point1, point2);
-
-	listOfXwings.push_back(xwing);
+	XWing* xwing = SpawnXWing(point1, point2);
 }
 
 void XWingManager::RandomShipAttackRun()
@@ -95,10 +97,7 @@ void XWingManager::RandomShipAttackRun()
 		Debugger::Print("Calculating New Points ");
 	}
 
-	XWing* xwing = SpawnXWing();
-	xwing->AttackRun(point1, point2);
-
-	listOfXwings.push_back(xwing);
+	XWing* xwing = SpawnXWing(point1,point2);
 
 }
 
@@ -120,10 +119,8 @@ void XWingManager::RandomSphereRun()
 	glm::vec3 point2 = sphereTransform->position - dir * sphereSpawnRange;
 
 
-	XWing* xwing = SpawnXWing();
-	xwing->AttackRun(point1, point2);
+	XWing* xwing = SpawnXWing(point1,point2);
 
-	listOfXwings.push_back(xwing);
 }
 
 void XWingManager::SetStarDestroyer(StarDestroyer* starDestroyer)
@@ -158,6 +155,10 @@ void XWingManager::OnKeyPressed(const int& key)
 	else if (key == GLFW_KEY_4)
 	{
 		RandomSphereRun();
+	}
+	else if (key == GLFW_KEY_SPACE)
+	{
+		CameraHandler::GetInstance().EnableFreeCamera();
 	}
 }
 

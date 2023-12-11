@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Camera\CameraHandler.cpp" />
     <ClCompile Include="src\EntityManager\Entity.cpp" />
     <ClCompile Include="src\EntityManager\EntityManager.cpp" />
     <ClCompile Include="src\InputManager\InputManager.cpp" />
@@ -150,6 +151,7 @@
     <ClCompile Include="src\XWing\XWingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera\CameraHandler.h" />
     <ClInclude Include="src\EntityManager\Entity.h" />
     <ClInclude Include="src\EntityManager\EntityManager.h" />
     <ClInclude Include="src\InputManager\iInputListener.h" />

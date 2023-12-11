@@ -3,6 +3,7 @@
 #include "EntityManager/EntityManager.h"
 #include "StarDestroyer/StarDestroyer.h"
 #include "XWing/XWingManager.h"
+#include "Camera/CameraHandler.h"
 
 void PhysicsApplication::SetUp()
 {
@@ -52,6 +53,8 @@ void PhysicsApplication::SetUp()
 	lightManager.AddLight(dirLight);
 
 #pragma endregion
+
+	CameraHandler::GetInstance().SetCamera(camera);
 
 	StarDestroyer* starDestroyer = new StarDestroyer();
 	XWingManager* xwingManager = new XWingManager();
