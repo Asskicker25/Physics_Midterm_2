@@ -8,6 +8,8 @@ class StarDestroyer : public Entity
 {
 public:
 
+	bool startExplosion = false;
+
 	Model* starDestroyer;
 
 	Sphere leftSphereShape;
@@ -23,6 +25,10 @@ public:
 
 	void SetApplication(PhysicsApplication* application);
 
+	void SetShader(Shader* shader);
+
+
+
 	// Inherited via Entity
 	void Start() override;
 	void Update(float deltaTime) override;
@@ -32,14 +38,21 @@ public:
 private:
 
 	Renderer* renderer;
+	Shader* shader;
 	PhysicsApplication* application;
 
 	int leftHealth = 100;
 	int rightHealth = 100;
 
+	float offset = 0;
+
+	float explosionSpeed = 700;
+
+
 	std::unordered_map<PhysicsObject*, std::string> colliderTags;
 
 	void ReducHealth(int index);
+	void SetExplosionOffset();
 
 	void DrawAABBRecursive(HierarchicalAABBNode* node);
 	void DrawCollisionAabb(PhysicsObject* phyObj);

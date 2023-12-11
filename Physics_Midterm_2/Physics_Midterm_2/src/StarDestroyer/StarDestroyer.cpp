@@ -54,16 +54,24 @@ void StarDestroyer::SetApplication(PhysicsApplication* application)
 		"Left Sphere : " + std::to_string(leftHealth) + "  Right Sphere : " + std::to_string(rightHealth);
 }
 
+void StarDestroyer::SetShader(Shader* shader)
+{
+	this->shader = shader;
+	renderer->AddModel(starDestroyer, shader);
+}
+
 void StarDestroyer::Start()
 {
 }
 
 void StarDestroyer::Update(float deltaTime)
 {
+	SetExplosionOffset();
+
 	DrawCollisionAabb(starDestroyerPhyObj);
 
-	renderer->DrawSphere(leftSphereShape.position, leftSphereShape.radius);
-	renderer->DrawSphere(rightSphereShape.position, rightSphereShape.radius);
+	/*renderer->DrawSphere(leftSphereShape.position, leftSphereShape.radius);
+	renderer->DrawSphere(rightSphereShape.position, rightSphereShape.radius);*/
 
 	//DrawAABBRecursive(phyObj->hierarchialAABB->rootNode);
 }
@@ -86,7 +94,7 @@ void StarDestroyer::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, 
 	rightSphereShape.radius = 3.0f;
 
 
-	renderer->AddModel(starDestroyer, shader);
+	//renderer->AddModel(starDestroyer, shader);
 	
 	starDestroyerPhyObj->Initialize(starDestroyer, MESH_OF_TRIANGLES, STATIC, TRIGGER, true);
 	starDestroyerPhyObj->userData = this;
@@ -104,13 +112,42 @@ void StarDestroyer::ReducHealth(int index)
 	if (index == 0)
 	{
 		rightHealth -= 25;
+		rightHealth = glm::clamp(rightHealth, 0, 100);
 	}
 	else if (index == 1)
 	{
 		leftHealth -= 25;
+		leftHealth = glm::clamp(leftHealth, 0, 100);
 	}
 
-	application->titleMessage = "Left Sphere : " + std::to_string(leftHealth) + "  Right Sphere : " + std::to_string(rightHealth);
+	if (leftHealth == 0 && rightHealth == 0)
+	{
+		application->titleMessage = "He's Dead Jim...!               You've Destroyerd the StarDestroyer!!!";
+
+		startExplosion = true;
+
+		system("cls");
+		Debugger::Print("Both Sphere Deflectors Down!!!");
+		Debugger::Print("Star Destroyer, Destroyed!!!");
+	}
+	else
+	{
+		application->titleMessage =
+			"Left Sphere : " + std::to_string(leftHealth) + "  Right Sphere : " + std::to_string(rightHealth);
+	}
+	
+
+}
+
+void StarDestroyer::SetExplosionOffset()
+{
+	if (!startExplosion) return;
+
+	shader->Bind();
+
+	offset += Timer::GetInstance().deltaTime * explosionSpeed;
+
+	shader->SetUniform1f("explosionOffset", offset);
 
 }
 

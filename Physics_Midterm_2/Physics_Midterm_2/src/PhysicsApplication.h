@@ -11,6 +11,9 @@ public:
 	PhysicsEngine physicsEngine;
 	std::string titleMessage;
 
+
+	Shader* explosionShader;
+
 	// Inherited via ApplicationWindow
 	void SetUp() override;
 	void PreRender() override;

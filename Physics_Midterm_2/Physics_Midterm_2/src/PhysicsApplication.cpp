@@ -38,6 +38,14 @@ void PhysicsApplication::SetUp()
 
 #pragma endregion
 
+#pragma region Shader
+
+	explosionShader = new Shader("Assets/Shader/StarDestroyer.shader");
+	explosionShader->blendMode = OPAQUE;
+	explosionShader->applyInverseModel = true;
+	Debugger::Print("ExplosionShaderID : ", explosionShader->GetShaderId());
+
+#pragma endregion
 
 	
 
@@ -51,14 +59,19 @@ void PhysicsApplication::SetUp()
 	dirLight->InitializeLight(lightModel, Directional);
 	dirLight->intensity = 1.2f;
 	dirLight->transform->SetRotation(glm::vec3(-30, 0, 0));
+
 	lightManager.AddLight(dirLight);
+	lightManager.AddShader(explosionShader);
 
 #pragma endregion
 
 	CameraHandler::GetInstance().SetCamera(camera);
 
 	BulletManager::GetInstance().Initialize();
+	
 	StarDestroyer* starDestroyer = new StarDestroyer();
+	starDestroyer->SetShader(explosionShader);
+
 	XWingManager* xwingManager = new XWingManager();
 	xwingManager->SetStarDestroyer(starDestroyer);
 
@@ -71,6 +84,13 @@ void PhysicsApplication::SetUp()
 
 void PhysicsApplication::PreRender()
 {
+	explosionShader->Bind();
+	explosionShader->SetUniformMat("projection", camera->GetMatrix());
+	explosionShader->SetUniformMat("view", view);
+	explosionShader->SetUniform3f("viewPos", camera->transform.position.x, camera->transform.position.y, 
+		camera->transform.position.z);
+
+
 	EntityManager::GetInstance().Update(Timer::GetInstance().deltaTime);
 	physicsEngine.Update(Timer::GetInstance().deltaTime);
 }

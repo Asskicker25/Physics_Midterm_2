@@ -9,7 +9,7 @@ XWing::XWing()
 
 	modelPhy = new PhysicsObject();
 
-	sqCheckDist = turnAwayDistance * turnAwayDistance;
+	selfDestructDistance *= selfDestructDistance;
 }
 
 void XWing::CreateInstance(Model& model)
@@ -18,6 +18,7 @@ void XWing::CreateInstance(Model& model)
 
 
 	modelPhy->properties.colliderScale = 10;
+	modelPhy->properties.offset = glm::vec3(0, 0, -5);
 	modelPhy->Initialize(this->model, SPHERE, DYNAMIC, TRIGGER,true);
 	modelPhy->userData = this;
 
@@ -110,6 +111,17 @@ void XWing::Shoot()
 	shoudlShoot = true;
 }
 
+void XWing::HandleSelfDestruct()
+{
+	glm::vec3 diff = glm::vec3(0) - model->transform.position;
+	float sqDist = glm::dot(diff, diff);
+
+	if (sqDist >= selfDestructDistance)
+	{
+		Destroy();
+	}
+}
+
 void XWing::DrawPath()
 {
 	if (!drawPath) return;
@@ -122,7 +134,7 @@ void XWing::DrawPath()
 	renderer->DrawSphere(startPos, 2, colors[0]);
 	renderer->DrawSphere(endPos, 2, colors[2]);
 
-	Sphere* sphere = dynamic_cast<Sphere*>(modelPhy->GetTransformedPhysicsShape());
+	//Sphere* sphere = dynamic_cast<Sphere*>(modelPhy->GetTransformedPhysicsShape());
 
 	//renderer->DrawSphere(sphere->position, sphere->radius, colors[4]);
 	//renderer->DrawSphere(rayHitPoint, 5, colors[3]);
@@ -137,6 +149,7 @@ void XWing::Update(float deltaTime)
 {
 	HandleShooting();
 	DrawPath();
+	HandleSelfDestruct();
 }
 
 void XWing::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, PhysicsEngine* physicsEngine)

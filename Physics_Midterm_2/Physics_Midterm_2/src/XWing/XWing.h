@@ -25,11 +25,10 @@ private:
 	bool shoudlShoot = false;
 
 	float spacing = 1;
-	float turnAwayDistance = 40;
 
 	float speed = 30;
 	float sqDist = 0;
-	float sqCheckDist = 0;
+	float selfDestructDistance = 500;
 
 	glm::vec3 startPos = glm::vec3(0);
 	glm::vec3 endPos = glm::vec3(0);
@@ -50,7 +49,7 @@ private:
 
 	std::vector<glm::vec3> listOfPathPoints;
 
-
+	void HandleSelfDestruct();
 	void DrawPath();
 
 	// Inherited via Entity

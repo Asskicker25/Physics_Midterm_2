@@ -189,6 +189,10 @@ void XWingManager::OnKeyPressed(const int& key)
 	{
 		CameraHandler::GetInstance().EnableFreeCamera("Default");
 	}
+	else if (key == GLFW_KEY_ENTER)
+	{
+		starDestroyer->startExplosion = true;
+	}
 }
 
 void XWingManager::OnKeyReleased(const int& key)
