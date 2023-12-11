@@ -16,6 +16,8 @@ CollisionDetail& CollisionDetail::GetInstance()
 
 void CollisionDetail::AddPoint(const glm::vec3& collisionPoint)
 {
+	if (destroyed) return;
+
 	Model* newModel = new Model();
 	newModel->CopyFromModel(*model);
 	newModel->transform.SetPosition(collisionPoint);
@@ -28,6 +30,7 @@ void CollisionDetail::AddPoint(const glm::vec3& collisionPoint)
 
 void CollisionDetail::Destroy()
 {
+	destroyed = true;
 	for (Model* model : listOfCollisionModels)
 	{
 		renderer->RemoveModel(model);

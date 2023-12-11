@@ -57,8 +57,8 @@ void PhysicsApplication::SetUp()
 
 	Light* dirLight = new Light();
 	dirLight->InitializeLight(lightModel, Directional);
-	dirLight->intensity = 1.2f;
-	dirLight->transform->SetRotation(glm::vec3(-30, 0, 0));
+	dirLight->intensity = 1.5f;
+	dirLight->transform->SetRotation(glm::vec3(-30, 180, 0));
 
 	lightManager.AddLight(dirLight);
 	lightManager.AddShader(explosionShader);

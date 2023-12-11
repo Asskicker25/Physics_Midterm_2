@@ -83,6 +83,7 @@ void StarDestroyer::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, 
 	tag = "StarDestroyer";
 
 	starDestroyer->LoadModel("Assets/Models/Stardestroyer_CompleteModel_LayersJoined_xyz_n_uv.ply");
+	//starDestroyer->LoadModel("Assets/Models/Stardestroyer_CompleteModel_LayersJoined (decimate 10 per, 167,274 vert, 59,360 face).ply");
 	starDestroyer->transform.SetScale(glm::vec3(0.1f));
 	starDestroyer->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.4, 0.4, 0.4, 1.0f));
 	//starDestroyer->isWireframe = true;

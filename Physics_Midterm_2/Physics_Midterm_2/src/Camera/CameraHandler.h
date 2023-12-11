@@ -29,7 +29,7 @@ private:
 
 	float followDistance = 5;
 	float speed = 0;
-	float maxSpeed = 8;
+	float maxSpeed = 6;
 	float accelerationRange = 60;
 	float deaccelerationRange = 20;
 

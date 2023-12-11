@@ -21,6 +21,8 @@ private:
 
 	Model* model;
 
+	bool destroyed = false;
+
 	std::vector<Model*> listOfCollisionModels;
 
 	// Inherited via Entity
