@@ -12,6 +12,27 @@ StarDestroyer::StarDestroyer()
 
 	InitializeEntity(this);
 
+	starDestroyer->modelId = "StarDestroyer";
+	leftSphere->modelId = "LeftSphere";
+	rightSphere->modelId = "RightSphere";
+
+
+	colliderTags[leftSpherePhy] = "LeftSphere";
+	colliderTags[rightSpherePhy] = "RightSphere";
+	colliderTags[starDestroyerPhyObj] = "Ship";
+
+}
+
+std::string StarDestroyer::GetTag(PhysicsObject* phyObj)
+{
+	std::unordered_map<PhysicsObject*, std::string>::iterator it = colliderTags.find(phyObj);
+
+	if (it != colliderTags.end())
+	{
+		return colliderTags[phyObj];
+	}
+	
+	return "";
 }
 
 void StarDestroyer::Start()
@@ -27,10 +48,12 @@ void StarDestroyer::Update(float deltaTime)
 void StarDestroyer::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, PhysicsEngine* physicsEngine)
 {
 	this->renderer = renderer;
+	tag = "StarDestroyer";
 
 	starDestroyer->LoadModel("Assets/Models/Stardestroyer_CompleteModel_LayersJoined (decimate 10 per, 167,274 vert, 59,360 face).ply");
 	starDestroyer->transform.SetScale(glm::vec3(0.1f));
 	starDestroyer->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.7, 0.7, 0.7, 1.0f));
+	//starDestroyer->isWireframe = true;
 
 	leftSphere->LoadModel("res/Models/DefaultSphere.fbx");
 	leftSphere->isWireframe = true;
@@ -56,6 +79,10 @@ void StarDestroyer::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, 
 
 	rightSpherePhy->Initialize(rightSphere, SPHERE, STATIC, TRIGGER, true);
 	rightSpherePhy->userData = this;
+
+	physicsEngine->AddPhysicsObject(starDestroyerPhyObj);
+	physicsEngine->AddPhysicsObject(leftSpherePhy);
+	physicsEngine->AddPhysicsObject(rightSpherePhy);
 
 }
 

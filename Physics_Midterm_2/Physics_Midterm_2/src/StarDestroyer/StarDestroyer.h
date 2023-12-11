@@ -16,6 +16,7 @@ public:
 
 	StarDestroyer();
 
+	std::string GetTag(PhysicsObject* phyObj);
 
 	// Inherited via Entity
 	void Start() override;
@@ -26,6 +27,8 @@ public:
 private:
 
 	Renderer* renderer;
+
+	std::unordered_map<PhysicsObject*, std::string> colliderTags;
 
 	void DrawAABBRecursive(HierarchicalAABBNode* node);
 	void DrawCollisionAabb(PhysicsObject* phyObj);

@@ -1,4 +1,5 @@
 #include "XWing.h"
+#include "../StarDestroyer/StarDestroyer.h"
 
 XWing::XWing()
 {
@@ -7,6 +8,8 @@ XWing::XWing()
 
 	modelPhy = new PhysicsObject();
 	colliderModelPhy = new PhysicsObject();
+
+	sqCheckDist = turnAwayDistance * turnAwayDistance;
 }
 
 void XWing::CreateInstance(Model& model, Model& colliderModel)
@@ -16,11 +19,40 @@ void XWing::CreateInstance(Model& model, Model& colliderModel)
 
 	this->colliderModel->isWireframe = true;
 
-	modelPhy->Initialize(this->model, SPHERE, DYNAMIC, TRIGGER);
+	modelPhy->Initialize(this->model, SPHERE, DYNAMIC, TRIGGER,true);
 	modelPhy->userData = this;
 
 	colliderModelPhy->Initialize(this->colliderModel, SPHERE, DYNAMIC, TRIGGER, true);
 	colliderModelPhy->userData = this;
+
+	modelPhy->AddExludingPhyObj(modelPhy); 
+
+	/*colliderModelPhy->AssignCollisionCallback([this](PhysicsObject* other)
+		{
+			Entity* entity = (Entity*)other->userData;
+
+			if (entity->tag == "StarDestroyer")
+			{
+
+
+				StarDestroyer* starDestroyer = (StarDestroyer*)entity;
+
+				std::string tag = starDestroyer->GetTag(other);
+
+				if (tag == "LeftSphere")
+				{
+					Debugger::Print("LeftSphere");
+				}
+				else if (tag == "RightSphere")
+				{
+					Debugger::Print("RightSphere");
+				}
+				else if (tag == "Ship")
+				{
+					Debugger::Print("Ship");
+				}
+			}
+		});*/
 }
 
 void XWing::AttackRun(const glm::vec3& startPos, const glm::vec3& endPos)
@@ -53,7 +85,26 @@ void XWing::AttackRun(const glm::vec3& startPos, const glm::vec3& endPos)
 
 	modelPhy->velocity = direction * speed;
 
+
 	drawPath = true;
+}
+
+void XWing::SetRayHitPoint(const glm::vec3& point)
+{
+	this->rayHitPoint = point;
+}
+
+void XWing::HandleShooting()
+{
+	if (rayHitPoint == glm::vec3(0)) return;
+
+	diff = rayHitPoint - model->transform.position;
+
+	sqDist = glm::dot(diff, diff);
+
+	if (sqDist <= sqCheckDist)
+	{
+	}
 }
 
 void XWing::DrawPath()
@@ -62,11 +113,12 @@ void XWing::DrawPath()
 
 	for (glm::vec3 pos : listOfPathPoints)
 	{
-		renderer->DrawSphere(pos, 0.5, colors[1]);
+		renderer->DrawSphere(pos, 0.1, colors[1]);
 	}
 
-	renderer->DrawSphere(startPos, 10, colors[0]);
-	renderer->DrawSphere(endPos, 10, colors[2]);
+	renderer->DrawSphere(startPos, 5, colors[0]);
+	renderer->DrawSphere(endPos, 5, colors[2]);
+	//renderer->DrawSphere(rayHitPoint, 5, colors[3]);
 
 }
 
@@ -76,6 +128,7 @@ void XWing::Start()
 
 void XWing::Update(float deltaTime)
 {
+	HandleShooting();
 	DrawPath();
 }
 

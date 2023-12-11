@@ -22,6 +22,7 @@ private:
 	std::vector <glm::vec3> collisionPoints;
 	std::vector <glm::vec3> collisionNormals;
 	std::vector<Aabb> collisionAabbs;
+	std::vector<PhysicsObject*> listOfExcludingPhyObjects;
 
 	std::function<void(PhysicsObject*)> collisionCallback = nullptr;
 
@@ -63,6 +64,9 @@ public:
 	Aabb CalculateModelAABB();
 	Aabb GetModelAABB();
 	Aabb GetAABB();
+
+	void AddExludingPhyObj(PhysicsObject* phyObj);
+	bool CheckIfExcluding(PhysicsObject* phyObj);
 
 	void CalculatePhysicsShape();
 	iShape* GetTransformedPhysicsShape();

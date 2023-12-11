@@ -17,17 +17,21 @@ XWing* XWingFactory::CreateXWing()
 
     XWing* xwing = new XWing();
 
+    std::string entityId = "Xwing" + std::to_string(spawnedCount);
+
     xwing->CreateInstance(*xWingModel, *xWingColliderModel);
 
     renderer->AddModel(xwing->model, shader);
     renderer->AddModel(xwing->colliderModel, shader);
 
+    xwing->model->modelId = entityId;
+    xwing->colliderModel->modelId = "ColliderModel" + entityId;
     xwing->colliderModel->SetModelParent(xwing->model);
 
     physicsEngine->AddPhysicsObject(xwing->colliderModelPhy);
     physicsEngine->AddPhysicsObject(xwing->modelPhy);
 
-    EntityManager::GetInstance().AddEntity("Xwing" + std::to_string(spawnedCount), xwing);
+    EntityManager::GetInstance().AddEntity(entityId, xwing);
 
     //spawnedCount++;
 

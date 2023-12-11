@@ -33,12 +33,17 @@ private:
 
 	float sphereSpawnRange = 150;
 
+	Sphere* leftSphere;
+	Sphere* rightSphere;
+
 	glm::vec3 GetPointInSpace();
+	glm::vec3 GetRayHitPoint(const glm::vec3& startPos, glm::vec3& dir, float length);
 	float GetRange(float range, float excludingRange);
 
 	std::vector<XWing*> listOfXwings;
 
 	StarDestroyer* starDestroyer;
+
 
 
 	// Inherited via Entity

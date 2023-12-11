@@ -185,6 +185,23 @@ Aabb PhysicsObject::GetAABB()
 	return aabb;
 }
 
+void PhysicsObject::AddExludingPhyObj(PhysicsObject* phyObj)
+{
+	listOfExcludingPhyObjects.push_back(phyObj);
+}
+
+bool PhysicsObject::CheckIfExcluding(PhysicsObject* phyObj)
+{
+	for (PhysicsObject* phy : listOfExcludingPhyObjects)
+	{
+		if (phy == phyObj)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void PhysicsObject::CalculatePhysicsShape()
 {
 	aabb = CalculateModelAABB();

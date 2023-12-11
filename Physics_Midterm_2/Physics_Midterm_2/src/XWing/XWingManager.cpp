@@ -42,6 +42,30 @@ glm::vec3 XWingManager::GetPointInSpace()
 	return newPoint;
 }
 
+glm::vec3 XWingManager::GetRayHitPoint(const glm::vec3& startPos, glm::vec3& dir, float length)
+{
+	glm::vec3 collisionPt;
+	glm::vec3 collisionNormal;
+
+	if (RayCastSphere(startPos, dir, leftSphere, length, collisionPt, collisionNormal))
+	{
+		return collisionPt;
+	}
+
+	if (RayCastSphere(startPos, dir, rightSphere, length, collisionPt, collisionNormal))
+	{
+		return collisionPt;
+	}
+
+	if (RayCastMesh(startPos, dir, starDestroyer->starDestroyer->transform.GetTransformMatrix(),
+		length, starDestroyer->starDestroyerPhyObj->GetTriangleList(), collisionPt, collisionNormal))
+	{
+		return collisionPt;
+	}
+
+	return glm::vec3(0);
+}
+
 
 void XWingManager::Start()
 {
@@ -52,6 +76,12 @@ XWing* XWingManager::SpawnXWing(const glm::vec3& point1, const glm::vec3& point2
 {
 	XWing* xwing = xwingFactory->CreateXWing();
 	xwing->AttackRun(point1, point2);
+
+	glm::vec3 diff = point2 - point1;
+	float length = glm::length(diff);
+	glm::vec3 dir = glm::normalize(diff);
+
+	xwing->SetRayHitPoint(GetRayHitPoint(point1, dir, length));
 
 	listOfXwings.push_back(xwing);
 
@@ -126,6 +156,9 @@ void XWingManager::RandomSphereRun()
 void XWingManager::SetStarDestroyer(StarDestroyer* starDestroyer)
 {
 	this->starDestroyer = starDestroyer;
+
+	leftSphere = (Sphere*) starDestroyer->leftSpherePhy->transformedPhysicsShape;
+	rightSphere = (Sphere*) starDestroyer->rightSpherePhy->transformedPhysicsShape;
 }
 
 

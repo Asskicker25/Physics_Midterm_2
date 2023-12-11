@@ -96,6 +96,9 @@ void PhysicsEngine::UpdatePhysics(float deltaTime)
 		{
 			if (iteratorObject == otherObject)
 				continue;
+			
+			if (iteratorObject->CheckIfExcluding(otherObject)) 
+				continue;
 
 
 			if (CollisionAABBvsAABB(iteratorObject->GetModelAABB(), otherObject->GetModelAABB()))
