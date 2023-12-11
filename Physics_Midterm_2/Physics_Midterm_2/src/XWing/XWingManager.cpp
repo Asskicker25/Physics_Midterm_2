@@ -157,8 +157,8 @@ void XWingManager::SetStarDestroyer(StarDestroyer* starDestroyer)
 {
 	this->starDestroyer = starDestroyer;
 
-	leftSphere = (Sphere*) starDestroyer->leftSpherePhy->transformedPhysicsShape;
-	rightSphere = (Sphere*) starDestroyer->rightSpherePhy->transformedPhysicsShape;
+	leftSphere = dynamic_cast<Sphere*> ( starDestroyer->leftSpherePhy->GetTransformedPhysicsShape());
+	rightSphere = dynamic_cast<Sphere*> (starDestroyer->rightSpherePhy->GetTransformedPhysicsShape());
 }
 
 
@@ -191,7 +191,7 @@ void XWingManager::OnKeyPressed(const int& key)
 	}
 	else if (key == GLFW_KEY_SPACE)
 	{
-		CameraHandler::GetInstance().EnableFreeCamera();
+		CameraHandler::GetInstance().EnableFreeCamera("Default");
 	}
 }
 

@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\CollisionDetail\CollisionDetail.cpp" />
     <ClCompile Include="src\Bullet\BulletManager.cpp" />
     <ClCompile Include="src\Bullet\BulletFactory.cpp" />
     <ClCompile Include="src\Bullet\Bullet.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="src\XWing\XWingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\CollisionDetail\CollisionDetail.h" />
     <ClInclude Include="src\Bullet\BulletManager.h" />
     <ClInclude Include="src\Bullet\BulletFactory.h" />
     <ClInclude Include="src\Bullet\Bullet.h" />

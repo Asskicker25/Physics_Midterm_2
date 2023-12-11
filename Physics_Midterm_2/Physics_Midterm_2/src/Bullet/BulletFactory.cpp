@@ -4,6 +4,7 @@
 BulletFactory::BulletFactory()
 {
 	bullet = new Model("Assets/Models/TearDropBullet.ply");
+	bullet->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.7f, 0.7f, 0.0f, 1.0f));
 	bullet->transform.SetScale(glm::vec3( 1.0f));
 }
 

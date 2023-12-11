@@ -24,7 +24,7 @@ private:
 	bool drawPath = false;
 	bool shoudlShoot = false;
 
-	float spacing = 2;
+	float spacing = 1;
 	float turnAwayDistance = 40;
 
 	float speed = 30;

@@ -94,17 +94,6 @@ void XWing::SetRayHitPoint(const glm::vec3& point)
 void XWing::HandleShooting()
 {
 	if (!shoudlShoot) return;
-	/*if (rayHitPoint == glm::vec3(0)) return;
-
-	diff = rayHitPoint - model->transform.position;
-
-	sqDist = glm::dot(diff, diff);
-
-	if (sqDist <= sqCheckDist)
-	{
-		didShoot = true;
-		Shoot();
-	}*/
 
 	Bullet* bullet = BulletManager::GetInstance().SpawnBullet();
 	bullet->model->transform.SetPosition(model->transform.position);
@@ -114,13 +103,15 @@ void XWing::HandleShooting()
 
 	bullet->model->transform.SetOrientationFromDirections(up, -right);
 
-	//bullet->SetVelocity(direction);
+	bullet->SetVelocity(direction);
+
 	modelPhy->velocity = -modelPhy->velocity;
 
-	CameraHandler::GetInstance().EnableFreeCamera();
+	model->transform.SetOrientationFromDirections(up, -right);
+
+	CameraHandler::GetInstance().EnableFreeCamera(model->modelId);
 
 	shoudlShoot = false;
-
 
 }
 
@@ -137,7 +128,7 @@ void XWing::DrawPath()
 
 	for (glm::vec3 pos : listOfPathPoints)
 	{
-		renderer->DrawSphere(pos, 0.05, colors[1]);
+		renderer->DrawSphere(pos, 0.01, colors[1]);
 	}
 
 	renderer->DrawSphere(startPos, 2, colors[0]);

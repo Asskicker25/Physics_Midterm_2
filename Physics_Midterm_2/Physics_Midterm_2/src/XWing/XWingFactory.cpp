@@ -25,7 +25,7 @@ XWing* XWingFactory::CreateXWing()
 
     EntityManager::GetInstance().AddEntity(entityId, xwing);
 
-    //spawnedCount++;
+    spawnedCount++;
 
     return xwing;
 }

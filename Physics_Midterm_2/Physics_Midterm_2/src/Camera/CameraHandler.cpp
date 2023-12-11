@@ -8,7 +8,7 @@ CameraHandler::CameraHandler()
 {
 	InitializeEntity(this);
 
-	followOffset = glm::vec3(0, 1, 0);
+	followOffset = glm::vec3(0, 0.5f, 0);
 }
 
 CameraHandler& CameraHandler::GetInstance()
@@ -22,14 +22,19 @@ void CameraHandler::SetCamera(Camera* camera)
 	this->camera = camera;
 }
 
-void CameraHandler::EnableFreeCamera()
+void CameraHandler::EnableFreeCamera(const std::string& id)
 {
-	followAndLookAt = false;
+	if (id == currentFollowId || id == "Default")
+	{
+		followAndLookAt = false;
+	}
 }
 
 void CameraHandler::FollowObject(Model* model)
 {
 	this->model = model;
+
+	currentFollowId = model->modelId;
 	followAndLookAt = true;
 
 	glm::vec3 pos = model->transform.position + followOffset;
@@ -106,12 +111,6 @@ void CameraHandler::HandleLookAt()
 	right = glm::cross(up, dir);
 
 	camera->transform.SetOrientationFromDirections(up, right);
-
-	/*float pitch = camera->transform.rotation.x;
-	pitch = glm::clamp(pitch, -89.0f, 89.0f);
-
-	camera->transform.SetRotation(glm::vec3(pitch,
-		camera->transform.rotation.y, 0));*/
 
 }
 

@@ -31,7 +31,7 @@ private:
 	float spawnRangeY = 70;
 	float spawnRangeZ = 120;
 
-	float sphereSpawnRange = 150;
+	float sphereSpawnRange = 100;
 
 	Sphere* leftSphere;
 	Sphere* rightSphere;

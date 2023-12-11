@@ -14,7 +14,7 @@ public:
 	static CameraHandler& GetInstance();
 	void SetCamera(Camera* camera);
 
-	void EnableFreeCamera();
+	void EnableFreeCamera(const std::string& id);
 
 	void FollowObject(Model* model);
 
@@ -23,9 +23,11 @@ private:
 	Camera* camera;
 	Model* model;
 
+	std::string currentFollowId;
+
 	bool followAndLookAt = false;
 
-	float followDistance = 10;
+	float followDistance = 5;
 	float speed = 0;
 	float maxSpeed = 8;
 	float accelerationRange = 60;
