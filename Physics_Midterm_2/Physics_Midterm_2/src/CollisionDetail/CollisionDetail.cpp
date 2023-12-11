@@ -21,8 +21,17 @@ void CollisionDetail::AddPoint(const glm::vec3& collisionPoint)
 	newModel->transform.SetPosition(collisionPoint);
 	renderer->AddModel(newModel, shader);
 
+	listOfCollisionModels.push_back(newModel);
 	//listOfCollisionPoints.push_back(collisionPoint);
 
+}
+
+void CollisionDetail::Destroy()
+{
+	for (Model* model : listOfCollisionModels)
+	{
+		renderer->RemoveModel(model);
+	}
 }
 
 void CollisionDetail::Start()

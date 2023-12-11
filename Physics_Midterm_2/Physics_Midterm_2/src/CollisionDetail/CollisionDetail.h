@@ -12,6 +12,8 @@ public:
 
 	void AddPoint(const glm::vec3& collisionPoint);
 
+	void Destroy();
+
 private:
 
 	Renderer* renderer;
@@ -19,7 +21,7 @@ private:
 
 	Model* model;
 
-	std::vector<glm::vec3> listOfCollisionPoints;
+	std::vector<Model*> listOfCollisionModels;
 
 	// Inherited via Entity
 	void Start() override;

@@ -18,7 +18,7 @@ void XWing::CreateInstance(Model& model)
 
 
 	modelPhy->properties.colliderScale = 10;
-	modelPhy->properties.offset = glm::vec3(0, 0, -5);
+	modelPhy->properties.offset = glm::vec3(0, 0, -10);
 	modelPhy->Initialize(this->model, SPHERE, DYNAMIC, TRIGGER,true);
 	modelPhy->userData = this;
 
