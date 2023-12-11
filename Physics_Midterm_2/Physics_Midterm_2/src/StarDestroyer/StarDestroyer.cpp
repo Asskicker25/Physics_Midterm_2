@@ -80,9 +80,9 @@ void StarDestroyer::AddToRendererAndPhysics(Renderer* renderer, Shader* shader, 
 	rightSpherePhy->Initialize(rightSphere, SPHERE, STATIC, TRIGGER, true);
 	rightSpherePhy->userData = this;
 
-	physicsEngine->AddPhysicsObject(starDestroyerPhyObj);
 	physicsEngine->AddPhysicsObject(leftSpherePhy);
 	physicsEngine->AddPhysicsObject(rightSpherePhy);
+	physicsEngine->AddPhysicsObject(starDestroyerPhyObj);
 
 }
 

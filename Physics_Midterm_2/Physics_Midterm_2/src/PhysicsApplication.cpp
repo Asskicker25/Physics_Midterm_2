@@ -4,6 +4,7 @@
 #include "StarDestroyer/StarDestroyer.h"
 #include "XWing/XWingManager.h"
 #include "Camera/CameraHandler.h"
+#include "Bullet/BulletManager.h"
 
 void PhysicsApplication::SetUp()
 {
@@ -56,6 +57,7 @@ void PhysicsApplication::SetUp()
 
 	CameraHandler::GetInstance().SetCamera(camera);
 
+	BulletManager::GetInstance().Initialize();
 	StarDestroyer* starDestroyer = new StarDestroyer();
 	XWingManager* xwingManager = new XWingManager();
 	xwingManager->SetStarDestroyer(starDestroyer);
@@ -67,8 +69,8 @@ void PhysicsApplication::SetUp()
 
 void PhysicsApplication::PreRender()
 {
-	physicsEngine.Update(Timer::GetInstance().deltaTime);
 	EntityManager::GetInstance().Update(Timer::GetInstance().deltaTime);
+	physicsEngine.Update(Timer::GetInstance().deltaTime);
 }
 
 void PhysicsApplication::PostRender()
@@ -85,7 +87,9 @@ void PhysicsApplication::ProcessInput(GLFWwindow* window)
 		<< "  Camera Pitch : "
 		<< camera->transform.rotation.x
 		<< "  Camera Yaw : "
-		<< camera->transform.rotation.y;
+		<< camera->transform.rotation.y
+		<< "  Camera Z : "
+		<<camera->transform.rotation.z;
 
 	std::string theTitle = ssTitle.str();
 

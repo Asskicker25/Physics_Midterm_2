@@ -1,5 +1,7 @@
 #include "XWing.h"
 #include "../StarDestroyer/StarDestroyer.h"
+#include "../Bullet/BulletManager.h"
+#include "../Camera/CameraHandler.h"
 
 XWing::XWing()
 {
@@ -15,17 +17,16 @@ void XWing::CreateInstance(Model& model)
 	this->model->CopyFromModel(model);
 
 
+	modelPhy->properties.colliderScale = 10;
 	modelPhy->Initialize(this->model, SPHERE, DYNAMIC, TRIGGER,true);
 	modelPhy->userData = this;
 
-	/*colliderModelPhy->AssignCollisionCallback([this](PhysicsObject* other)
+	modelPhy->AssignCollisionCallback([this](PhysicsObject* other)
 		{
 			Entity* entity = (Entity*)other->userData;
 
 			if (entity->tag == "StarDestroyer")
 			{
-
-
 				StarDestroyer* starDestroyer = (StarDestroyer*)entity;
 
 				std::string tag = starDestroyer->GetTag(other);
@@ -33,17 +34,22 @@ void XWing::CreateInstance(Model& model)
 				if (tag == "LeftSphere")
 				{
 					Debugger::Print("LeftSphere");
+					modelPhy->isCollisionInvoke = false;
+					Shoot();
 				}
 				else if (tag == "RightSphere")
 				{
 					Debugger::Print("RightSphere");
+					modelPhy->isCollisionInvoke = false;
+					Shoot();
 				}
 				else if (tag == "Ship")
 				{
-					Debugger::Print("Ship");
+					modelPhy->isCollisionInvoke = false;
+					Shoot();
 				}
 			}
-		});*/
+		});
 }
 
 void XWing::AttackRun(const glm::vec3& startPos, const glm::vec3& endPos)
@@ -87,8 +93,8 @@ void XWing::SetRayHitPoint(const glm::vec3& point)
 
 void XWing::HandleShooting()
 {
-	if (didShoot) return;
-	if (rayHitPoint == glm::vec3(0)) return;
+	if (!shoudlShoot) return;
+	/*if (rayHitPoint == glm::vec3(0)) return;
 
 	diff = rayHitPoint - model->transform.position;
 
@@ -98,12 +104,31 @@ void XWing::HandleShooting()
 	{
 		didShoot = true;
 		Shoot();
-	}
+	}*/
+
+	Bullet* bullet = BulletManager::GetInstance().SpawnBullet();
+	bullet->model->transform.SetPosition(model->transform.position);
+
+	glm::vec3 right = glm::cross(glm::vec3(0, 1, 0), direction);
+	glm::vec3 up = glm::cross(direction, right);
+
+	bullet->model->transform.SetOrientationFromDirections(up, -right);
+
+	//bullet->SetVelocity(direction);
+	modelPhy->velocity = -modelPhy->velocity;
+
+	CameraHandler::GetInstance().EnableFreeCamera();
+
+	shoudlShoot = false;
+
+
 }
 
 void XWing::Shoot()
 {
-	modelPhy->velocity = -modelPhy->velocity;
+	glm::vec3 shootDir = glm::normalize(modelPhy->velocity);
+
+	shoudlShoot = true;
 }
 
 void XWing::DrawPath()
@@ -117,6 +142,10 @@ void XWing::DrawPath()
 
 	renderer->DrawSphere(startPos, 2, colors[0]);
 	renderer->DrawSphere(endPos, 2, colors[2]);
+
+	Sphere* sphere = dynamic_cast<Sphere*>(modelPhy->GetTransformedPhysicsShape());
+
+	//renderer->DrawSphere(sphere->position, sphere->radius, colors[4]);
 	//renderer->DrawSphere(rayHitPoint, 5, colors[3]);
 
 }

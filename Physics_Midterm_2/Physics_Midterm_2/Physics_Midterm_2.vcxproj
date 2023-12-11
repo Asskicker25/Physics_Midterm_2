@@ -137,6 +137,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Bullet\BulletManager.cpp" />
+    <ClCompile Include="src\Bullet\BulletFactory.cpp" />
+    <ClCompile Include="src\Bullet\Bullet.cpp" />
     <ClCompile Include="src\Camera\CameraHandler.cpp" />
     <ClCompile Include="src\EntityManager\Entity.cpp" />
     <ClCompile Include="src\EntityManager\EntityManager.cpp" />
@@ -151,6 +154,9 @@
     <ClCompile Include="src\XWing\XWingManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Bullet\BulletManager.h" />
+    <ClInclude Include="src\Bullet\BulletFactory.h" />
+    <ClInclude Include="src\Bullet\Bullet.h" />
     <ClInclude Include="src\Camera\CameraHandler.h" />
     <ClInclude Include="src\EntityManager\Entity.h" />
     <ClInclude Include="src\EntityManager\EntityManager.h" />

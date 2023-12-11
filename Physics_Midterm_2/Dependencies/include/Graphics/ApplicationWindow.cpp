@@ -254,15 +254,33 @@ void ApplicationWindow::MoveMouse()
 	if (!mouseCameraMove) return;
 	//if (lastMousePos.x == 0 && lastMousePos.y == 0) return;
 
+	if (camera->transform.rotation.z == 180 || camera->transform.rotation.z == -180)
+	{
+		if (camera->transform.rotation.x > (89.0f + 180))	camera->transform.rotation.x = 89.0f + 180;
+		if (camera->transform.rotation.x < -89.0f - 180)	camera->transform.rotation.x = -89.0f - 180;
+	}
+	else
+	{
+		if (camera->transform.rotation.x > 89.0f)	camera->transform.rotation.x = 89.0f;
+		if (camera->transform.rotation.x < -89.0f)	camera->transform.rotation.x = -89.0f;
+	}
 
-	if (camera->transform.rotation.x > 89.0f)	camera->transform.rotation.x = 89.0f;
-	if (camera->transform.rotation.x < -89.0f)	camera->transform.rotation.x = -89.0f;
 
 	//std::cout << cameraYaw << std::endl;
 
 	//std::cout << "Camera Yaw " << cameraYaw << std::endl;
-	camera->transform.rotation.y -= mouseDeltaPos.x * mouseSens;
-	camera->transform.rotation.x += mouseDeltaPos.y * mouseSens;
+
+	if (camera->transform.rotation.z == 180 || camera->transform.rotation.z == -180)
+	{
+		camera->transform.rotation.y += mouseDeltaPos.x * mouseSens;
+		camera->transform.rotation.x += mouseDeltaPos.y * mouseSens;
+	}
+	else
+	{
+		camera->transform.rotation.y -= mouseDeltaPos.x * mouseSens;
+		camera->transform.rotation.x += mouseDeltaPos.y * mouseSens;
+	}
+
 
 
 	camera->transform.SetRotation(camera->transform.rotation);

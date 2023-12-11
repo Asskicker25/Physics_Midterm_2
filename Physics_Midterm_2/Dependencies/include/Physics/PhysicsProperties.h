@@ -13,6 +13,7 @@ public:
 
 	float inverse_mass = 1.0f;
 	float bounciness = 0.5f;
+	float colliderScale = 1;
 
 	glm::vec3 gravityScale = glm::vec3(1.0f);
 };

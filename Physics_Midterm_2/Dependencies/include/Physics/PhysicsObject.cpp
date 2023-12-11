@@ -212,6 +212,7 @@ void PhysicsObject::CalculatePhysicsShape()
 		glm::vec3 position = (aabb.min + aabb.max) * 0.5f;
 		glm::vec3 sideLengths = aabb.max - aabb.min;
 		float radius = 0.5f * glm::max(sideLengths.x, glm::max(sideLengths.y, sideLengths.z));
+		radius *= properties.colliderScale;
 		physicsShape = new Sphere(position, radius);
 		transformedPhysicsShape = new Sphere();
 	}

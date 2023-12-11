@@ -103,6 +103,7 @@ void CameraHandler::HandleLookAt()
 
 	right = glm::cross(glm::vec3(0, 1, 0), dir);
 	up = glm::cross(dir, right);
+	right = glm::cross(up, dir);
 
 	camera->transform.SetOrientationFromDirections(up, right);
 
@@ -111,6 +112,7 @@ void CameraHandler::HandleLookAt()
 
 	camera->transform.SetRotation(glm::vec3(pitch,
 		camera->transform.rotation.y, 0));*/
+
 }
 
 

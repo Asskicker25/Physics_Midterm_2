@@ -27,13 +27,13 @@ private:
 
 	float followDistance = 10;
 	float speed = 0;
-	float maxSpeed = 10;
-	float accelerationRange = 0;
-	float deaccelerationRange = 0;
+	float maxSpeed = 8;
+	float accelerationRange = 60;
+	float deaccelerationRange = 20;
 
 	float sqDist = 0;
-	float sqAcceleration = 60;
-	float sqDeacceleration = 20;
+	float sqAcceleration = 0;
+	float sqDeacceleration = 0;
 
 	float timeStep = 0;
 	float deltaTime = 0;

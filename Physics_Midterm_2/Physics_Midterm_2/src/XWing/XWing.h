@@ -22,7 +22,7 @@ public:
 private:
 
 	bool drawPath = false;
-	bool didShoot = false;
+	bool shoudlShoot = false;
 
 	float spacing = 2;
 	float turnAwayDistance = 40;
@@ -35,15 +35,15 @@ private:
 	glm::vec3 endPos = glm::vec3(0);
 	glm::vec3 direction = glm::vec3(0);
 	glm::vec3 rayHitPoint = glm::vec3(0);
-	glm::vec3 dir = glm::vec3(0);
 	glm::vec3 diff = glm::vec3(0);
 	
 
-	glm::vec4 colors[4] = {
+	glm::vec4 colors[5] = {
 		glm::vec4(1.0, 0.0, 0.0f, 1.0f),
 		glm::vec4(0.0, 1.0, 0.0f, 1.0f),
 		glm::vec4(0.0, 0.0, 1.0f, 1.0f),
-		glm::vec4(0.0, 0.0, 0.0f, 1.0f)
+		glm::vec4(0.0, 0.0, 0.0f, 1.0f),
+		glm::vec4(1.0, 1.0, 1.0f, 1.0f),
 	};
 
 	Renderer* renderer;
