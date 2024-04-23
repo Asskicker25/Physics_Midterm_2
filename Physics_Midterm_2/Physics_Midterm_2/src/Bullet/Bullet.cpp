@@ -18,6 +18,7 @@ void Bullet::CreateInstance(Model& model)
 
 	phyObj->AssignCollisionCallback([this](PhysicsObject* other)
 		{
+			if (other->userData == nullptr) return;
 
 			Entity* entity = (Entity*)other->userData;
 
@@ -34,10 +35,10 @@ void Bullet::CreateInstance(Model& model)
 
 					int result = starDestroyer->GetSphereDeflector(point);
 
-					if (result == -1)
+					/*if (result == -1)
 					{
-						CollisionDetail::GetInstance().AddPoint(point);
-					}
+					}*/
+					CollisionDetail::GetInstance().AddPoint(point);
 
 					Destroy();
 				}

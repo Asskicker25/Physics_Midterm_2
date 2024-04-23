@@ -5,6 +5,7 @@ CollisionDetail::CollisionDetail()
 	InitializeEntity(this);
 
 	model = new Model("res/Models/DefaultSphere.fbx");
+	model->transform.SetScale(glm::vec3(0.3f));
 	model->meshes[0]->material->AsMaterial()->SetBaseColor(glm::vec4(0.8, 0.5, 0.9, 1.0f));
 }
 
